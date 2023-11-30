@@ -1,0 +1,117 @@
+import tkinter as tk
+from PIL import Image, ImageTk
+import os
+import shutil
+import random
+
+# Get the current working directory
+current_directory = os.getcwd()
+
+# Specify the file name
+file_name = "nuke.png"
+
+# Specify the destination directory (current working directory in this example)
+destination_directory = current_directory
+
+# Specify the full path to the source file (Downloads directory in this example)
+source_path = os.path.join(os.path.expanduser("~"), "Downloads", file_name)
+
+# Specify the full path to the destination file
+destination_path = os.path.join(destination_directory, file_name)
+
+# Move the file to the destination directory if it's not already there
+if source_path != destination_path and not os.path.exists(destination_path):
+    shutil.move(source_path, destination_path)
+
+def insert_text(text):
+    # Check if the button pressed is "69" and occasionally subtract 1
+    if text == "69 " and random.randint(1, 5) == 1:
+        text = str(int(text) - 1) + " "
+
+    # Insert the text into the textbox
+    textbox.config(state=tk.NORMAL)
+    textbox.insert(tk.END, text)
+    textbox.config(state=tk.DISABLED)
+
+    # Check if the conditions for displaying the image are met
+    check_text()
+
+def check_text():
+    # Get the content of the textbox
+    content = textbox.get("1.0", tk.END)
+
+    # Check if the string "69 " repeats 20 times in the content
+    if content.count("69 ") == 20:
+        show_image()
+        content = 0
+
+def show_image():
+    # Load and display the image
+    image_path = "nuke.png"  # Replace with the actual path to your image
+    image = Image.open(image_path)
+    image = ImageTk.PhotoImage(image)
+    image_label.config(image=image)
+    image_label.image = image
+    window.after(5000, hide_image)
+
+def hide_image():
+    # Clear the displayed image
+    image_label.config(image='')
+
+def clear_text():
+    # Clear the text in the textbox and reset the displayed image
+    textbox.config(state=tk.NORMAL)
+    textbox.delete("1.0", tk.END)
+    textbox.config(state=tk.DISABLED)
+    image_label.config(image='')
+
+# Get user input
+val = input('Enter 1 to start the program, 2 to close: ')
+
+# Check if the user input is "1" to start the Tkinter window
+if val == "1":
+    # Create the main window
+    window = tk.Tk()
+    window.geometry("500x700")
+    window.title("Math game")
+
+    # Create a label for the welcome message
+    label = tk.Label(window, text="Welcome", font=('Arial', 18))
+    label.pack(padx=20, pady='20')
+
+    # Create a textbox for user input
+    textbox = tk.Text(window, font=('Arial', 18), height=3, state=tk.DISABLED)
+    textbox.pack(padx=10)
+
+    # Create a label for displaying the image
+    image_label = tk.Label(window)
+    image_label.pack()
+
+    # Create a frame for buttons
+    buttonframe = tk.Frame(window)
+    buttonframe.columnconfigure(0, weight=1)
+    buttonframe.columnconfigure(1, weight=1)
+    buttonframe.columnconfigure(2, weight=1)
+    buttonframe.columnconfigure(3, weight=1)
+
+    # Create buttons with corresponding commands
+    b1 = tk.Button(buttonframe, text="420", font=('Arial', 18), command=lambda: insert_text("420 "))
+    b1.grid(row=0, column=0, sticky="news")
+
+    b2 = tk.Button(buttonframe, text="69", font=('Arial', 18), command=lambda: insert_text("69 "))
+    b2.grid(row=1, column=1, sticky="news")
+
+    b3 = tk.Button(buttonframe, text="ur mom", font=('Arial', 18), command=lambda: insert_text("ur mom "))
+    b3.grid(row=2, column=2, sticky="news")
+
+    b4 = tk.Button(buttonframe, text="Restart", font=('Arial', 18), command=clear_text)
+    b4.grid(row=1, column=3, sticky="news")
+
+    buttonframe.pack(fill='x')
+
+    # Start the main event loop
+    window.mainloop()
+elif val == "2":
+    print("Window closed.")
+else:
+    print("Invalid input.")
